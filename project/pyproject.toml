@@ -6,7 +6,6 @@ authors = ["Falk <gammalget@gmail.com>"]
 license = "GPL"
 
 [tool.poetry.dependencies]
-python = "^3.8"
 fastapi = "^0.66.0"
 uvicorn = "^0.14.0"
 asyncpg = "^0.23.0"
@@ -26,6 +25,7 @@ pytest-cov = "^2.11.1"
 httpx = "^0.18.1"
 requests = "^2.25.1"
 pytest-xdist = "^2.2.1"
+coverage-badge = "^1.0.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
