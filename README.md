@@ -1,8 +1,8 @@
 # FastAPI SortaSimpleTemplate
 
 [![python](https://img.shields.io/static/v1?label=python&message=3.9%2B&color=informational&logo=python&logoColor=white)](https://www.python.org/)
+[![Maintainability](https://api.codeclimate.com/v1/badges/1c619a6e8f4de4847464/maintainability)](https://codeclimate.com/github/falkowich/sorta-simple-fastapi-template/maintainability)
 [![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
-![Continuous Integration and Delivery](https://github.com/falkowich/sorta-simple-fastapi-template/workflows/Github%20Actions/badge.svg?branch=master)
 
 This repo conatins my own try to learn FastAPI and create a simple template for myself.
 
