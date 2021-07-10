@@ -1,13 +1,58 @@
  
-# Temporary README :)
- 
- 
- 
+# FastAPI Sorta Simple Template.
+
+[![python](https://img.shields.io/static/v1?label=python&message=3.9%2B&color=informational&logo=python&logoColor=white)](https://www.python.org/)
+[![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
+![Continuous Integration and Delivery](https://github.com/falkowich/sorta-simple-fastapi-template/workflows/Github%20Actions/badge.svg?branch=master)
+
+This repo conatins my own try to learn FastAPI and create a simple template for myself.
+
+It is a fully dockerized dev environment with Tortoise ORM with Aerich for migrations. I strive to use Pytest, Codecoverage and black as code style.  
+It's a project in flux, that is changed when new ideas is implemented. 
+
+If you have any suggestions or even a code PR, do not hesitate to tell me or submit a PR :)
+
+## How to use
+
+### Docker development images usage
+
+Build dev images
+
+```shell
+docker-compose build 
+```
+
+Startup dev conatiners
+
+```shell
+docker-compose up -d
+```
+Initiate database
+
+```shell
+docker-compose exec web python app/db.py
+```
+
+Apply db migrations
+
+```shell
+
+
+Tail logs
+```shell
+docker-compose logs -s
+```
+
+#### Testing
+
+
+
+
  
  
    
- 5546  docker-compose build  
- 5547  docker-compose up -d  
+ 5546   
+ 5547    
  5556  docker-compose logs web  
  5559  docker-compose exec web-db   
  5560  docker-compose exec web-db  sh  
@@ -46,35 +91,6 @@ docker-compose exec web
  2760  docker-compose stop  
  2776  docker-compose restart  
   
-
-# Fastapi - readme and ideas from a https://github.com/tobiwankenobii/fastapi-essential and will be customed later on..
-
-[![python](https://img.shields.io/static/v1?label=python&message=3.9%2B&color=informational&logo=python&logoColor=white)](https://www.python.org/)
-[![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
-![Continuous Integration and Delivery](https://github.com/tobiwankenobii/fastapi-essential/workflows/Github%20Actions/badge.svg?branch=master)
-
-Simple REST Api made using FastAPI framework. It can be used as a very basic CRUD boilerplate, which is fully dockerized
-along with PostgreSQL database, uses Tortoise as db ORM with Aerich for migrations, has Pytest, Codecoverage and Black
-support and uses Poetry as a dependency manager.
-
-It's quite hard to find fully working and easy to manage FastAPI boiler, which supports modern extensions like Poetry or
-Tortoise. I hope this repo will help you achieve that.
-
-## Usage
-
-### Docker setup
-
-Build Docker images
-
-```shell
-docker-compose build
-```
-
-Run Docker containers
-
-```shell
-docker-compose up
-```
 
 ### Make commands
 
