@@ -1,5 +1,5 @@
  
- 
+# Temporary README :)
  
  
  
@@ -46,3 +46,79 @@ docker-compose exec web
  2760  docker-compose stop  
  2776  docker-compose restart  
   
+
+# Fastapi - readme and ideas from a https://github.com/tobiwankenobii/fastapi-essential and will be customed later on..
+
+[![python](https://img.shields.io/static/v1?label=python&message=3.9%2B&color=informational&logo=python&logoColor=white)](https://www.python.org/)
+[![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
+![Continuous Integration and Delivery](https://github.com/tobiwankenobii/fastapi-essential/workflows/Github%20Actions/badge.svg?branch=master)
+
+Simple REST Api made using FastAPI framework. It can be used as a very basic CRUD boilerplate, which is fully dockerized
+along with PostgreSQL database, uses Tortoise as db ORM with Aerich for migrations, has Pytest, Codecoverage and Black
+support and uses Poetry as a dependency manager.
+
+It's quite hard to find fully working and easy to manage FastAPI boiler, which supports modern extensions like Poetry or
+Tortoise. I hope this repo will help you achieve that.
+
+## Usage
+
+### Docker setup
+
+Build Docker images
+
+```shell
+docker-compose build
+```
+
+Run Docker containers
+
+```shell
+docker-compose up
+```
+
+### Make commands
+
+Apply Tortoise schema
+
+```shell
+docker-compose exec fastapi make schema
+```
+
+Apply Aerich migrations
+
+```shell
+docker-compose exec fastapi make migrations
+```
+
+Run tests
+
+```shell
+docker-compose exec fastapi make test
+```
+
+Run lint
+
+```shell
+docker-compose exec fastapi make lint
+```
+
+### Removing migrations
+
+If there is a need to remove existing migrations and replace them with some new models, delete the `migrations` folder
+and run
+
+```shell
+docker-compose exec fastapi aerich init-db
+```
+
+If new `aerich.ini` file is needed, delete the existing one and run
+
+```shell
+docker-compose exec fastapi aerich init -t src.database.TORTOISE_ORM
+```
+
+And apply migrations
+
+```shell
+docker-compose exec fastapi aerich upgrade
+```
