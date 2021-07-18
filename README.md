@@ -80,6 +80,12 @@ Run test with html coverage
 docker-compose exec web python -m pytest --cov="." --cov-report html
 ```
 
+Run tests with xml coverage
+
+```shell 
+docker-compose exec web python -m pytest --cov="." --cov-report=xml
+```
+
 Run tests with unittest module
 
 ```shell
