@@ -86,6 +86,12 @@ Run tests with xml coverage
 docker-compose exec web python -m pytest --cov="." --cov-report=xml
 ```
 
+Upload above test to codecov
+
+```shell
+codecov -t [token]
+```
+
 Run tests with unittest module
 
 ```shell
@@ -110,7 +116,7 @@ docker-compose exec web black . --diff
 
 Apply changes
 
-```hell
+```shell
 docker-compose exec web black . 
 ```
 
