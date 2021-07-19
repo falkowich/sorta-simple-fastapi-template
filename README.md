@@ -57,7 +57,7 @@ upgrade    Upgrade to specified version.
 Tail logs
 
 ```shell
-docker-compose logs -s
+docker-compose logs -f
 ```
 
 #### Testing
