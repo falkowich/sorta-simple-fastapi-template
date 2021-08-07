@@ -82,20 +82,20 @@ docker-compose exec web python -m pytest --cov="." --cov-report html
 
 Run tests with xml coverage
 
-```shell 
+```shell
 docker-compose exec web python -m pytest --cov="." --cov-report=xml
 ```
 
 Upload above test to codecov
 
 ```shell
-codecov -t [token]
+  10 -t [token]
 ```
 
-Run tests with unittest module
+Run t ests with unittest module
 
 ```shell
-docker-compose exec web pytest -k "unit" -n auto  
+docker     -compose exec web pytest -k "unit" -n auto  
 ```
 
 ### Code quality
