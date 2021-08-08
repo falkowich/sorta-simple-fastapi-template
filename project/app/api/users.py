@@ -21,8 +21,6 @@ async def create_user(payload: UserPostPayloadSchema) -> UserResponseSchema:
 
     hashed_password = await get_password_hash(payload.plain_password)
 
-    
-
     user_id = await crud.post(payload, hashed_password)
 
     response_object = {

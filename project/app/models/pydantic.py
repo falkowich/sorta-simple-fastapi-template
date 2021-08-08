@@ -8,14 +8,18 @@ class UserPayloadSchema(BaseModel):
     full_name: Optional[str] = None
     disabled: Optional[bool] = None
 
+
 class UserPostPayloadSchema(UserPayloadSchema):
-     plain_password: str
+    plain_password: str
+
 
 class UserResponseSchema(UserPostPayloadSchema):
     id: int
 
+
 class UserUpdatePayloadSchema(UserPayloadSchema):
     plain_password: str
+
 
 class Token(BaseModel):
     access_token: str
@@ -24,6 +28,7 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: Optional[str] = None
+
 
 class UserInDB(UserPayloadSchema):
     hashed_password: str

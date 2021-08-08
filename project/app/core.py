@@ -5,7 +5,8 @@ from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from passlib.context import CryptContext
-from app.models.pydantic import UserPayloadSchema, UserInDB, Token, TokenData
+
+from app.models.pydantic import Token, TokenData, UserInDB, UserPayloadSchema
 from app.models.tortoise import User
 
 # to get a string like this run:
@@ -37,10 +38,10 @@ async def get_user(username: str):
     user_obj = await User.filter(username=username).first()
     if user_obj:
         user_dict = {
-                "username": user_obj.username,
-                "email": user_obj.email,
-                "hashed_password": user_obj.hashed_password,
-                "disabled": user_obj.disabled,
+            "username": user_obj.username,
+            "email": user_obj.email,
+            "hashed_password": user_obj.hashed_password,
+            "disabled": user_obj.disabled,
         }
         return UserInDB(**user_dict)
 
@@ -86,7 +87,9 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     return user
 
 
-async def get_current_active_user(current_user: UserPayloadSchema = Depends(get_current_user)):
+async def get_current_active_user(
+    current_user: UserPayloadSchema = Depends(get_current_user),
+):
     if current_user.disabled:
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
