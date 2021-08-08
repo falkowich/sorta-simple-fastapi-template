@@ -4,10 +4,12 @@ import os
 from fastapi import FastAPI
 from tortoise import Tortoise, run_async
 from tortoise.contrib.fastapi import register_tortoise
+from app.config import Settings
 
 log = logging.getLogger("uvicorn")
+settings = Settings()
 
-DATABASE_URL = os.environ.get("DATABASE_URL")
+DATABASE_URL = settings.database_url
 
 APP_MODELS = ["app.models.tortoise", "aerich.models"]
 
