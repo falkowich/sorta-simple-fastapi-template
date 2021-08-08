@@ -31,9 +31,6 @@ async def get_password_hash(password):
     return pwd_context.hash(password)
 
 
-### GÖR DB KOPPLING MED USER/HASHPASSWORD
-
-
 async def get_user(username: str):
     user_obj = await User.filter(username=username).first()
     if user_obj:

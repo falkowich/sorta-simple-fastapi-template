@@ -1,9 +1,10 @@
+from enum import unique
 from tortoise import fields, models
 from tortoise.contrib.pydantic import pydantic_model_creator
 
 
 class User(models.Model):
-    username = fields.TextField()
+    username = fields.CharField(max_length=255, unique=True)
     email = fields.TextField()
     full_name = fields.TextField()
     disabled = fields.BooleanField()

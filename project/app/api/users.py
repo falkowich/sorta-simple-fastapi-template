@@ -18,7 +18,7 @@ router = APIRouter()
 async def create_user(payload: UserPostPayloadSchema) -> UserResponseSchema:
     print(payload.plain_password)
 
-    hashed_password = await get_password_hash(payload.plain_password)
+    hashed_password = await get_password_hash(payload.plain_password.get_secret_value())
 
     user_id = await crud.post(payload, hashed_password)
 
