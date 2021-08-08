@@ -1,7 +1,6 @@
 from typing import List, Optional, Union
 
 from app.models.pydantic import (
-    UserPayloadSchema,
     UserPostPayloadSchema,
     UserUpdatePayloadSchema,
 )

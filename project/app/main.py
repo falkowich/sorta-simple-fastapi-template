@@ -1,8 +1,9 @@
 import logging
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 
 from app.api import auth, ping, users
+from app.core import get_current_active_user
 from app.db import init_db
 
 log = logging.getLogger("uvicorn")
@@ -11,7 +12,12 @@ log = logging.getLogger("uvicorn")
 def create_application() -> FastAPI:
     application = FastAPI()
     application.include_router(ping.router)
-    application.include_router(users.router, prefix="/users", tags=["users"])
+    application.include_router(
+        users.router,
+        prefix="/users",
+        tags=["users"],
+        dependencies=[Depends(get_current_active_user)],
+    )
     application.include_router(auth.router, tags=["auth"])
 
     return application
