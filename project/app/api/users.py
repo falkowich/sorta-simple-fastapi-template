@@ -5,21 +5,33 @@ from fastapi import APIRouter, HTTPException, Path
 from app.api import crud
 from app.models.pydantic import (
     UserPayloadSchema,
+    UserPostPayloadSchema,
     UserResponseSchema,
     UserUpdatePayloadSchema,
 )
 from app.models.tortoise import UserSchema
+from app.core import get_password_hash
 
 router = APIRouter()
 
 
 @router.post("/", response_model=UserResponseSchema, status_code=201)
-async def create_user(payload: UserPayloadSchema) -> UserResponseSchema:
-    user_id = await crud.post(payload)
+async def create_user(payload: UserPostPayloadSchema) -> UserResponseSchema:
+    print(payload.plain_password)
+
+    hashed_password = await get_password_hash(payload.plain_password)
+
+    
+
+    user_id = await crud.post(payload, hashed_password)
 
     response_object = {
         "id": user_id,
-        "url": payload.url,
+        "username": payload.username,
+        "email": payload.email,
+        "full_name": payload.full_name,
+        "disabled": payload.disabled,
+        "plain_password": hashed_password,
     }
 
     return response_object

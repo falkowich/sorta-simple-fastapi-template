@@ -3,12 +3,15 @@ from tortoise.contrib.pydantic import pydantic_model_creator
 
 
 class User(models.Model):
-    name = fields.TextField()
-    url = fields.TextField()
+    username = fields.TextField()
+    email = fields.TextField()
+    full_name = fields.TextField()
+    disabled = fields.BooleanField()
+    hashed_password = fields.TextField()
     created_at = fields.DatetimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.name} {self.url}"
+        return f"{self.username} {self.disabled}"
 
 
 UserSchema = pydantic_model_creator(User)
