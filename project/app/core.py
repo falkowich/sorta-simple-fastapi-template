@@ -1,5 +1,4 @@
 import os
-
 from datetime import datetime, timedelta
 from typing import Optional
 
@@ -9,16 +8,15 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 
 from app.config import Settings
-
 from app.models.pydantic import TokenData, UserInDB, UserPayloadSchema
 from app.models.tortoise import User
-
 
 settings = Settings()
 
 SECRET_KEY = settings.secret_key
 ALGORITHM = settings.algorithm
 ACCESS_TOKEN_EXPIRE_MINUTES = settings.access_token_expire_minutes
+
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -49,7 +47,6 @@ async def get_user(username: str):
 
 async def authenticate_user(username: str, password: str):
     user = await get_user(username)
-    print(user)
     if not user:
         return False
     if not await verify_password(password, user.hashed_password):
