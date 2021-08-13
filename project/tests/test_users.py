@@ -5,31 +5,57 @@ import pytest
 
 def test_create_users(test_app_with_db):
     response = test_app_with_db.post(
-        "/users/", data=json.dumps({"url": "https://foo.bar"})
+        "/users/",
+        data=json.dumps(
+            {
+                "username": "testuser",
+                "email": "testuser@example.com",
+                "full_name": "Test User",
+                "disabled": True,
+                "plain_password": "supersecretpassword",
+            }
+        ),
     )
 
     assert response.status_code == 201
-    assert response.json()["url"] == "https://foo.bar"
+
+    user_id = response.json()["id"]
+    response = test_app_with_db.delete(f"/users/{user_id}/")
+    assert response.status_code == 200
 
 
-def test_create_users_invalid_json(test_app):
-    response = test_app.post("/users/", data=json.dumps({}))
+def test_create_users_invalid_json(test_app_with_db):
+    response = test_app_with_db.post("/users/", data=json.dumps({}))
 
     assert response.status_code == 422
     assert response.json() == {
         "detail": [
             {
-                "loc": ["body", "url"],
+                "loc": ["body", "username"],
                 "msg": "field required",
                 "type": "value_error.missing",
-            }
+            },
+            {
+                "loc": ["body", "plain_password"],
+                "msg": "field required",
+                "type": "value_error.missing",
+            },
         ]
     }
 
 
 def test_read_user(test_app_with_db):
     response = test_app_with_db.post(
-        "/users/", data=json.dumps({"url": "https://foo.bar"})
+        "/users/",
+        data=json.dumps(
+            {
+                "username": "testuser",
+                "email": "testuser@example.com",
+                "full_name": "Test User",
+                "disabled": True,
+                "plain_password": "supersecretpassword",
+            }
+        ),
     )
     user_id = response.json()["id"]
 
@@ -38,9 +64,15 @@ def test_read_user(test_app_with_db):
 
     response_dict = response.json()
     assert response_dict["id"] == user_id
-    assert response_dict["url"] == "https://foo.bar"
-    assert response_dict["name"]
+    assert response_dict["username"] == "testuser"
+    assert response_dict["email"] == "testuser@example.com"
+    assert response_dict["full_name"] == "Test User"
+    assert response_dict["disabled"] == True
+    assert response_dict["hashed_password"]
     assert response_dict["created_at"]
+
+    response = test_app_with_db.delete(f"/users/{user_id}/")
+    assert response.status_code == 200
 
 
 def test_read_user_incorrect_id(test_app_with_db):
@@ -51,7 +83,16 @@ def test_read_user_incorrect_id(test_app_with_db):
 
 def test_read_all_users(test_app_with_db):
     response = test_app_with_db.post(
-        "/users/", data=json.dumps({"url": "https://foo.bar"})
+        "/users/",
+        data=json.dumps(
+            {
+                "username": "testuser",
+                "email": "testuser@example.com",
+                "full_name": "Test User",
+                "disabled": True,
+                "plain_password": "supersecretpassword",
+            }
+        ),
     )
     user_id = response.json()["id"]
 
@@ -61,16 +102,33 @@ def test_read_all_users(test_app_with_db):
     response_list = response.json()
     assert len(list(filter(lambda d: d["id"] == user_id, response_list))) == 1
 
+    response = test_app_with_db.delete(f"/users/{user_id}/")
+    assert response.status_code == 200
+
 
 def test_remove_user(test_app_with_db):
     response = test_app_with_db.post(
-        "/users/", data=json.dumps({"url": "https://foo.bar"})
+        "/users/",
+        data=json.dumps(
+            {
+                "username": "testuser",
+                "email": "testuser@example.com",
+                "full_name": "Test User",
+                "disabled": True,
+                "plain_password": "supersecretpassword",
+            }
+        ),
     )
     user_id = response.json()["id"]
 
     response = test_app_with_db.delete(f"/users/{user_id}/")
     assert response.status_code == 200
-    assert response.json() == {"id": user_id, "url": "https://foo.bar"}
+    response_dict = response.json()
+    assert response_dict["id"] == user_id
+    assert response_dict["username"] == "testuser"
+    assert response_dict["email"] == "testuser@example.com"
+    assert response_dict["full_name"] == "Test User"
+    assert response_dict["disabled"] == True
 
 
 def test_remove_user_incorrect_id(test_app_with_db):
@@ -81,30 +139,68 @@ def test_remove_user_incorrect_id(test_app_with_db):
 
 def test_update_user(test_app_with_db):
     response = test_app_with_db.post(
-        "/users/", data=json.dumps({"url": "https://foo.bar"})
+        "/users/",
+        data=json.dumps(
+            {
+                "username": "testuser",
+                "email": "testuser@example.com",
+                "full_name": "Test User",
+                "disabled": True,
+                "plain_password": "supersecretpassword",
+            }
+        ),
     )
     user_id = response.json()["id"]
 
     response = test_app_with_db.put(
         f"/users/{user_id}/",
-        data=json.dumps({"url": "https://foo.bar", "name": "updated"}),
+        data=json.dumps(
+            {
+                "username": "testuserupdated",
+                "email": "testuser.updatedr@example.com",
+                "full_name": "Test User Updated",
+                "disabled": False,
+                "plain_password": "updated_supersecretpassword",
+            }
+        ),
     )
     assert response.status_code == 200
 
     response_dict = response.json()
     assert response_dict["id"] == user_id
-    assert response_dict["url"] == "https://foo.bar"
-    assert response_dict["name"] == "updated"
-    assert response_dict["created_at"]
+    assert response_dict["username"] == "testuserupdated"
+    assert response_dict["email"] == "testuser.updatedr@example.com"
+    assert response_dict["full_name"] == "Test User Updated"
+    assert response_dict["disabled"] == False
+
+    response = test_app_with_db.delete(f"/users/{user_id}/")
+    assert response.status_code == 200
 
 
 @pytest.mark.parametrize(
     "user_id, payload, status_code, detail",
     [
-        [999, {"url": "https://foo.bar", "name": "updated!"}, 404, "User not found"],
+        [
+            999,
+            {
+                "username": "testuserupdated",
+                "email": "testuser.updatedr@example.com",
+                "full_name": "Test User Updated",
+                "disabled": False,
+                "plain_password": "updated_supersecretpassword",
+            },
+            404,
+            "User not found",
+        ],
         [
             0,
-            {"url": "https://foo.bar", "name": "updated"},
+            {
+                "username": "testuserupdated",
+                "email": "testuser.updatedr@example.com",
+                "full_name": "Test User Updated",
+                "disabled": False,
+                "plain_password": "updated_supersecretpassword",
+            },
             422,
             [
                 {
@@ -121,12 +217,12 @@ def test_update_user(test_app_with_db):
             422,
             [
                 {
-                    "loc": ["body", "url"],
+                    "loc": ["body", "username"],
                     "msg": "field required",
                     "type": "value_error.missing",
                 },
                 {
-                    "loc": ["body", "name"],
+                    "loc": ["body", "plain_password"],
                     "msg": "field required",
                     "type": "value_error.missing",
                 },
@@ -134,15 +230,15 @@ def test_update_user(test_app_with_db):
         ],
         [
             1,
-            {"url": "https://foo.bar"},
-            422,
-            [
-                {
-                    "loc": ["body", "name"],
-                    "msg": "field required",
-                    "type": "value_error.missing",
-                }
-            ],
+            {
+                "username": "testuserupdated",
+                "email": "testuser.updatedr@example.com",
+                "full_name": "Test User Updated",
+                "disabled": False,
+                "plain_password": "updated_supersecretpassword",
+            },
+            404,
+            "User not found",
         ],
     ],
 )
@@ -152,9 +248,43 @@ def test_update_user_invalid(test_app_with_db, user_id, payload, status_code, de
     assert response.json()["detail"] == detail
 
 
-def test_update_user_invalid_url(test_app):
-    response = test_app.put(
-        "/users/1/", data=json.dumps({"url": "invalid://url", "name": "updated!"})
+def test_update_user_invalid_username(test_app_with_db):
+    response = test_app_with_db.post(
+        "/users/",
+        data=json.dumps(
+            {
+                "username": "testuser",
+                "email": "testuser@example.com",
+                "full_name": "Test User",
+                "disabled": True,
+                "plain_password": "supersecretpassword",
+            }
+        ),
+    )
+    user_id = response.json()["id"]
+
+    response = test_app_with_db.put(
+        f"/users/{user_id}/",
+        data=json.dumps(
+            {
+                "username": "test_user",
+                "email": "testuser@example.com",
+                "full_name": "Test User",
+                "disabled": True,
+                "plain_password": "supersecretpassword",
+            }
+        ),
     )
     assert response.status_code == 422
-    assert response.json()["detail"][0]["msg"] == "URL scheme not permitted"
+    assert response.json() == {
+        "detail": [
+            {
+                "loc": ["body", "username"],
+                "msg": "must be alphanumeric",
+                "type": "assertion_error",
+            }
+        ]
+    }
+
+    response = test_app_with_db.delete(f"/users/{user_id}/")
+    assert response.status_code == 200

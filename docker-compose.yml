@@ -12,12 +12,14 @@ services:
     environment:
       - ENVIRONMENT=dev
       - TESTING=0
-      - DATABASE_URL=postgres://postgres:postgres@web-db:5432/web_dev        # new
-      - DATABASE_TEST_URL=postgres://postgres:postgres@web-db:5432/web_test  # new
-    depends_on:   # new
+      - SECRET_KEY=supersecretkey
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+      - DATABASE_URL=postgres://postgres:postgres@web-db:5432/web_dev
+      - DATABASE_TEST_URL=postgres://postgres:postgres@web-db:5432/web_test
+    depends_on:
       - web-db
 
-  # new
   web-db:
     build:
       context: ./project/db
