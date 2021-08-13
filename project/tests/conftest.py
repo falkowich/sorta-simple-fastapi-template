@@ -35,7 +35,7 @@ def test_app_with_db():
     # set up
     app = create_application()
     app.dependency_overrides[get_settings] = get_settings_override
-    # app.dependency_overrides[get_current_active_user] = get_current_active_user_override
+    app.dependency_overrides[get_current_active_user] = get_current_active_user_override
     register_tortoise(
         app,
         db_url=os.environ.get("DATABASE_TEST_URL"),
