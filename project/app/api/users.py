@@ -29,6 +29,8 @@ async def create_user(payload: UserPostPayloadSchema) -> UserResponseSchema:
         "disabled": payload.disabled,
         "plain_password": hashed_password,
     }
+    if not user_id:
+        raise HTTPException(status_code=422)
 
     return response_object
 

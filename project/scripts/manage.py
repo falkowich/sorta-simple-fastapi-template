@@ -57,7 +57,7 @@ async def create_admin() -> None:
         modules={"models": APP_MODELS},
     )
     user = User(
-        username="admind",
+        username="admin",
         email="admin@example.com",
         full_name="Builtin Administratior",
         disabled=False,

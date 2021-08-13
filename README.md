@@ -31,7 +31,13 @@ docker-compose up -d
 Initiate database
 
 ```shell
-docker-compose exec web python app/db.py
+docker-compose exec web python scripts/manage.py --mode generate-schemas
+```
+
+Create first admin user
+
+```shell
+docker-compose exec web python scripts/manage.py --mode create-admin
 ```
 
 Manage db migrations
@@ -88,8 +94,12 @@ docker-compose exec web python -m pytest --cov="." --cov-report=xml
 
 Upload above test to codecov
 
+For this to work you must work in your local virtualenv.
+
 ```shell
-  10 -t [token]
+  cd project
+  poetry shell
+  codecov -t [token]
 ```
 
 Run t ests with unittest module
