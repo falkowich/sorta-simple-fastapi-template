@@ -818,7 +818,7 @@ test = ["aiohttp", "flake8 (>=3.8.4,<3.9.0)", "psutil", "pycodestyle (>=2.6.0,<2
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "f5370b8bfc7221570b132801b8414c5f8b280f6b05c3ae368fcaab9ede3464b3"
+content-hash = "00c3d2641088074fa55cfce829c95c0b7bbb2e9193af798833de7226a5a68f5f"
 
 [metadata.files]
 aerich = [

@@ -1,8 +1,6 @@
 import logging
-import os
 
 from fastapi import FastAPI
-from tortoise import Tortoise, run_async
 from tortoise.contrib.fastapi import register_tortoise
 
 from app.config import Settings
@@ -33,23 +31,3 @@ def init_db(app: FastAPI) -> None:
         generate_schemas=False,
         add_exception_handlers=True,
     )
-
-
-async def generate_schemas() -> None:
-    log_row = "Initializing Tortoise..."
-    log.info(log_row)
-    print(log_row)
-
-    await Tortoise.init(
-        db_url=os.environ.get("DATABASE_URL"),
-        modules={"models": ["models.tortoise"]},
-    )
-    log_row = "Generating database schema via Tortoise..."
-    log.info(log_row)
-    print(log_row)
-    await Tortoise.generate_schemas()
-    await Tortoise.close_connections()
-
-
-if __name__ == "__main__":
-    run_async(generate_schemas())

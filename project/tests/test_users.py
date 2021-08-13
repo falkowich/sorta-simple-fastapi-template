@@ -5,11 +5,23 @@ import pytest
 
 def test_create_users(test_app_with_db):
     response = test_app_with_db.post(
-        "/users/", data=json.dumps({"url": "https://foo.bar"})
+        "/users/",
+        data=json.dumps(
+            {
+                "username": "testuser",
+                "email": "testuser@example.com",
+                "full_name": "Test User",
+                "disabled": True,
+                "plain_password": "supersecretpassword",
+            }
+        ),
     )
 
     assert response.status_code == 201
-    assert response.json()["url"] == "https://foo.bar"
+
+    user_id = response.json()["id"]
+    response = test_app_with_db.delete(f"/users/{user_id}/")
+    assert response.status_code == 200
 
 
 def test_create_users_invalid_json(test_app):
@@ -19,17 +31,28 @@ def test_create_users_invalid_json(test_app):
     assert response.json() == {
         "detail": [
             {
-                "loc": ["body", "url"],
+                "loc": ["body", "username"],
                 "msg": "field required",
                 "type": "value_error.missing",
-            }
+            },
+            {
+                "loc": ["body", "plain_password"],
+                "msg": "field required",
+                "type": "value_error.missing",
+            },
         ]
     }
 
 
 def test_read_user(test_app_with_db):
     response = test_app_with_db.post(
-        "/users/", data=json.dumps({"url": "https://foo.bar"})
+        "/users/", data=json.dumps(            {
+                "username": "testuser",
+                "email": "testuser@example.com",
+                "full_name": "Test User",
+                "disabled": True,
+                "plain_password": "supersecretpassword",
+            })
     )
     user_id = response.json()["id"]
 
@@ -38,9 +61,15 @@ def test_read_user(test_app_with_db):
 
     response_dict = response.json()
     assert response_dict["id"] == user_id
-    assert response_dict["url"] == "https://foo.bar"
-    assert response_dict["name"]
+    assert response_dict["username"] == "testuser"
+    assert response_dict["email"] == "testuser@example.com"
+    assert response_dict["full_name"] == "Test User"
+    assert response_dict["disabled"] == True
+    assert response_dict["hashed_password"]
     assert response_dict["created_at"]
+
+    response = test_app_with_db.delete(f"/users/{user_id}/")
+    assert response.status_code == 200
 
 
 def test_read_user_incorrect_id(test_app_with_db):
@@ -51,7 +80,13 @@ def test_read_user_incorrect_id(test_app_with_db):
 
 def test_read_all_users(test_app_with_db):
     response = test_app_with_db.post(
-        "/users/", data=json.dumps({"url": "https://foo.bar"})
+        "/users/", data=json.dumps(            {
+                "username": "testuser",
+                "email": "testuser@example.com",
+                "full_name": "Test User",
+                "disabled": True,
+                "plain_password": "supersecretpassword",
+            })
     )
     user_id = response.json()["id"]
 
@@ -61,16 +96,30 @@ def test_read_all_users(test_app_with_db):
     response_list = response.json()
     assert len(list(filter(lambda d: d["id"] == user_id, response_list))) == 1
 
+    response = test_app_with_db.delete(f"/users/{user_id}/")
+    assert response.status_code == 200
+
 
 def test_remove_user(test_app_with_db):
     response = test_app_with_db.post(
-        "/users/", data=json.dumps({"url": "https://foo.bar"})
+        "/users/", data=json.dumps(            {
+                "username": "testuser",
+                "email": "testuser@example.com",
+                "full_name": "Test User",
+                "disabled": True,
+                "plain_password": "supersecretpassword",
+            })
     )
     user_id = response.json()["id"]
 
     response = test_app_with_db.delete(f"/users/{user_id}/")
     assert response.status_code == 200
-    assert response.json() == {"id": user_id, "url": "https://foo.bar"}
+    response_dict = response.json()
+    assert response_dict["id"] == user_id
+    assert response_dict["username"] == "testuser"
+    assert response_dict["email"] == "testuser@example.com"
+    assert response_dict["full_name"] == "Test User"
+    assert response_dict["disabled"] == True
 
 
 def test_remove_user_incorrect_id(test_app_with_db):

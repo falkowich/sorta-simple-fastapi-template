@@ -27,7 +27,7 @@ class UserPostPayloadSchema(UserPayloadSchema):
         return v
 
 
-class UserResponseSchema(UserPostPayloadSchema):
+class UserResponseSchema(UserPayloadSchema):
     id: int
 
 

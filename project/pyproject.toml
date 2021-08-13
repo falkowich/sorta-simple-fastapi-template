@@ -20,6 +20,7 @@ python-multipart = "^0.0.5"
 python-jose = "^3.3.0"
 passlib = {version = "^1.7.4", extras = ["bcrypt"]}
 pydantic = {version = "^1.8.2", extras = ["email"]}
+click = "^8.0.1"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.9.2"
