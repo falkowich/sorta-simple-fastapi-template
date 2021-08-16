@@ -5,38 +5,21 @@ services:
   web:
     build: ./project
     command: gunicorn --bind 0.0.0.0:8000 app.main:app -k uvicorn.workers.UvicornWorker
-    expose:  # new
+    expose:
       - 8000
     ports:
       - 8004:8000
     environment:
       - ENVIRONMENT=prod
       - TESTING=0
-      - DATABASE_URL=postgres://postgres_data_prod:postgres_data_prod@web-db:5432/web_prod        # new
-    depends_on:   # new
-      - web-db
-    labels:  # new
+      - DATABASE_URL=postgres://fastapi_lab:supersecretpasswpord@localhost:5432/fastapi_lab
+    labels:
       - "traefik.enable=true"
       - "traefik.http.routers.fastapi.rule=Host(`fastapi.localhost`)"
       - "traefik.http.routers.fastapi.tls=true"
       - "traefik.http.routers.fastapi.tls.certresolver=letsencrypt"
-
-  # new
-  web-db:
-    build:
-      context: ./project/db
-      dockerfile: Dockerfile.prod
-    volumes:
-      - postgres_data_prod:/var/lib/postgresql/data/
-    expose:
-      - 5432
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_USER=postgres_data_prod
-      - POSTGRES_PASSWORD=postgres_data_prod
-  
-  traefik:  # new
+ 
+  traefik:
     build:
       context: ./project/traefik
       dockerfile: Dockerfile.traefik
@@ -56,5 +39,4 @@ services:
       - "traefik.http.middlewares.auth.basicauth.users=testuser:$$apr1$$jIKW.bdS$$eKXe4Lxjgy/rH65wP1iQe1"
 
 volumes:
-  postgres_data_prod:
   traefik-public-certificates:
