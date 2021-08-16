@@ -1,0 +1,2 @@
+fixes:
+  - "::project/"  # move path   e.g., "before/path" => "after/path"
