@@ -20,4 +20,4 @@ comment:
   require_changes: no
 
 fixes:
-- "project/::"  # move path   e.g., "before/path" => "after/path"
+- "/home/falk/dev/sorta-simple-fastapi-template/project/::"  # move path   e.g., "before/path" => "after/path"
