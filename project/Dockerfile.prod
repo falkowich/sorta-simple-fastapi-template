@@ -27,10 +27,3 @@ COPY poetry.lock pyproject.toml ./
 RUN poetry install --no-root --no-dev
 
 COPY . .
-
-# add entrypoint.sh
-COPY ./entrypoint.sh .
-RUN chmod +x /usr/src/app/entrypoint.sh
-
-# run entrypoint.sh
-ENTRYPOINT ["/usr/src/app/entrypoint.sh"]

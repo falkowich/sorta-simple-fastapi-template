@@ -2,20 +2,25 @@ version: '3.8'
 
 services:
 
-  web:
-    build: ./project
+  webprod:
+    build: 
+      context: ./project/
+      dockerfile: Dockerfile.prod
     command: gunicorn --bind 0.0.0.0:8000 app.main:app -k uvicorn.workers.UvicornWorker
     expose:
       - 8000
     ports:
-      - 8004:8000
+      - 8005:8000
     environment:
       - ENVIRONMENT=prod
       - TESTING=0
-      - DATABASE_URL=postgres://fastapi_lab:supersecretpasswpord@localhost:5432/fastapi_lab
+      - DATABASE_URL=postgres://fastapilab:supersecretpassword@host.domain.suffix:5432/fastapilab
+      - SECRET_KEY=supersecretkey
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.fastapi.rule=Host(`fastapi.localhost`)"
+      - "traefik.http.routers.fastapi.rule=Host(`fastapilab.sadsloth.net`)"
       - "traefik.http.routers.fastapi.tls=true"
       - "traefik.http.routers.fastapi.tls.certresolver=letsencrypt"
  
@@ -31,7 +36,7 @@ services:
       - "./traefik-public-certificates:/certificates"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.dashboard.rule=Host(`dashboard-fastapi.localhost`) && (PathPrefix(`/`)"
+      - "traefik.http.routers.dashboard.rule=Host(`lab.sadsloth.net`) && (PathPrefix(`/`)"
       - "traefik.http.routers.dashboard.tls=true"
       - "traefik.http.routers.dashboard.tls.certresolver=letsencrypt"
       - "traefik.http.routers.dashboard.service=api@internal"
