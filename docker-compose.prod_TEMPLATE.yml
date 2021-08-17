@@ -14,15 +14,17 @@ services:
     environment:
       - ENVIRONMENT=prod
       - TESTING=0
-      - DATABASE_URL=postgres://fastapilab:supersecretpassword@host.domain.suffix:5432/fastapilab
+      - DATABASE_URL=postgres://fastapi_lab:supersecretpassword@host.docker.internal:5432/fastapi_lab
       - SECRET_KEY=supersecretkey
       - ALGORITHM=HS256
       - ACCESS_TOKEN_EXPIRE_MINUTES=30
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.fastapi.rule=Host(`fastapilab.sadsloth.net`)"
+      - "traefik.http.routers.fastapi.rule=Host(`api.example.com`)"
       - "traefik.http.routers.fastapi.tls=true"
       - "traefik.http.routers.fastapi.tls.certresolver=letsencrypt"
+    extra_hosts:
+      - "host.docker.internal:10.254.254.254"
  
   traefik:
     build:
@@ -35,13 +37,13 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./traefik-public-certificates:/certificates"
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.dashboard.rule=Host(`lab.sadsloth.net`) && (PathPrefix(`/`)"
-      - "traefik.http.routers.dashboard.tls=true"
-      - "traefik.http.routers.dashboard.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.dashboard.service=api@internal"
-      - "traefik.http.routers.dashboard.middlewares=auth"
-      - "traefik.http.middlewares.auth.basicauth.users=testuser:$$apr1$$jIKW.bdS$$eKXe4Lxjgy/rH65wP1iQe1"
+     - "traefik.enable=true"
+     - "traefik.http.routers.dashboard.rule=Host(`apidash-example.com`)"
+     - "traefik.http.routers.dashboard.tls=true"
+     - "traefik.http.routers.dashboard.tls.certresolver=letsencrypt"
+     - "traefik.http.routers.dashboard.service=api@internal"
+     - "traefik.http.routers.dashboard.middlewares=auth"
+     - "traefik.http.middlewares.auth.basicauth.users=admin:$$apr1$$rgegeAID$$LqX3WPo20xnvquLYJIgVk0"
 
 volumes:
   traefik-public-certificates:
