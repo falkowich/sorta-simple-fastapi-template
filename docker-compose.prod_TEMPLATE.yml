@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+
+  webprod:
+    build: 
+      context: ./project/
+      dockerfile: Dockerfile.prod
+    command: gunicorn --bind 0.0.0.0:8000 app.main:app -k uvicorn.workers.UvicornWorker
+    expose:
+      - 8000
+    ports:
+      - 8005:8000
+    environment:
+      - ENVIRONMENT=prod
+      - TESTING=0
+      - DATABASE_URL=postgres://fastapi_lab:supersecretpassword@host.docker.internal:5432/fastapi_lab
+      - SECRET_KEY=supersecretkey
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.fastapi.rule=Host(`api.example.com`)"
+      - "traefik.http.routers.fastapi.tls=true"
+      - "traefik.http.routers.fastapi.tls.certresolver=letsencrypt"
+    extra_hosts:
+      - "host.docker.internal:10.254.254.254"
+ 
+  traefik:
+    build:
+      context: ./project/traefik
+      dockerfile: Dockerfile.traefik
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./traefik-public-certificates:/certificates"
+    labels:
+     - "traefik.enable=true"
+     - "traefik.http.routers.dashboard.rule=Host(`apidash-example.com`)"
+     - "traefik.http.routers.dashboard.tls=true"
+     - "traefik.http.routers.dashboard.tls.certresolver=letsencrypt"
+     - "traefik.http.routers.dashboard.service=api@internal"
+     - "traefik.http.routers.dashboard.middlewares=auth"
+     - "traefik.http.middlewares.auth.basicauth.users=admin:$$apr1$$rgegeAID$$LqX3WPo20xnvquLYJIgVk0"
+
+volumes:
+  traefik-public-certificates:
