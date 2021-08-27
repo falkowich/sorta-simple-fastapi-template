@@ -105,7 +105,7 @@ For this to work you must work in your local virtualenv.
 Run tests with unittest module
 
 ```shell
-docker     -compose exec web pytest -k "unit" -n auto  
+docker-compose exec web pytest -k "unit" -n auto  
 ```
 
 ### Code quality
