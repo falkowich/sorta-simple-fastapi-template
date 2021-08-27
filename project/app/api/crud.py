@@ -1,10 +1,10 @@
 from typing import List, Optional, Union
 
-from app.models.pydantic import (
+from app.schemas.user import (
     UserPostPayloadSchema,
     UserUpdatePayloadSchema,
 )
-from app.models.tortoise import User
+from app.models.user import User
 from app.core import get_password_hash
 
 

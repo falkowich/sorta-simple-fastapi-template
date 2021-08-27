@@ -6,7 +6,7 @@ from app.core import (
     timedelta,
     create_access_token,
 )
-from app.models.pydantic import Token
+from app.schemas.user import Token
 
 router = APIRouter()
 

@@ -3,12 +3,12 @@ from typing import List
 from fastapi import APIRouter, HTTPException, Path
 
 from app.api import crud
-from app.models.pydantic import (
+from app.schemas.user import (
     UserPostPayloadSchema,
     UserResponseSchema,
     UserUpdatePayloadSchema,
 )
-from app.models.tortoise import UserSchema
+from app.models.user import UserSchema
 from app.core import get_password_hash
 
 router = APIRouter()

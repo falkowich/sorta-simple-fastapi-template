@@ -8,8 +8,8 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 
 from app.config import Settings
-from app.models.pydantic import TokenData, UserInDB, UserPayloadSchema
-from app.models.tortoise import User
+from app.models.user import User
+from app.schemas.user import TokenData, UserInDB, UserPayloadSchema
 
 settings = Settings()
 

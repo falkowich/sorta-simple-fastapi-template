@@ -102,7 +102,7 @@ For this to work you must work in your local virtualenv.
   codecov -t [token]
 ```
 
-Run t ests with unittest module
+Run tests with unittest module
 
 ```shell
 docker     -compose exec web pytest -k "unit" -n auto  
@@ -135,17 +135,17 @@ docker-compose exec web black .
 Check code
 
 ```shell
-docker-compose exec web /bin/sh -c "isort ./**/*.py --check-only"
+docker-compose exec web /bin/sh -c "isort ./**/*.py --check-only --profile black"
 ```
 
 Show difference
 
 ```shell
-docker-compose exec web /bin/sh -c "isort ./**/*.py --diff"
+docker-compose exec web /bin/sh -c "isort ./**/*.py --diff --profile black"
 ```
 
 Apply changes
 
 ```shell
-docker-compose exec web /bin/sh -c "isort ./**/*.py"
+docker-compose exec web /bin/sh -c "isort ./**/*.py --profile black"
 ```

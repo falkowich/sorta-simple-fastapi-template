@@ -11,14 +11,14 @@ from tortoise.exceptions import IntegrityError
 
 from app.config import Settings
 from app.core import get_password_hash
-from app.models.tortoise import User
+from app.models.user import User
 
 log = logging.getLogger("uvicorn")
 settings = Settings()
 
 DATABASE_URL = settings.database_url
 
-APP_MODELS = ["app.models.tortoise", "aerich.models"]
+APP_MODELS = ["app.models.user", "aerich.models"]
 
 TORTOISE_ORM = {
     "connections": {"default": DATABASE_URL},

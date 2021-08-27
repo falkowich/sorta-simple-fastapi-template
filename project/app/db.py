@@ -10,7 +10,7 @@ settings = Settings()
 
 DATABASE_URL = settings.database_url
 
-APP_MODELS = ["app.models.tortoise", "aerich.models"]
+APP_MODELS = ["app.models.user", "aerich.models"]
 
 TORTOISE_ORM = {
     "connections": {"default": DATABASE_URL},
