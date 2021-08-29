@@ -3,29 +3,28 @@ import json
 import pytest
 
 
-def test_create_users(test_app_with_db):
-    response = test_app_with_db.post(
+def test_create_users(test_app_with_db_noauth):
+    response = test_app_with_db_noauth.post(
         "/users/",
         data=json.dumps(
             {
                 "username": "testuser",
                 "email": "testuser@example.com",
                 "full_name": "Test User",
-                "disabled": True,
+                "disabled": False,
                 "plain_password": "supersecretpassword",
             }
         ),
     )
 
     assert response.status_code == 201
-
     user_id = response.json()["id"]
-    response = test_app_with_db.delete(f"/users/{user_id}/")
+    response = test_app_with_db_noauth.delete(f"/users/{user_id}/")
     assert response.status_code == 200
 
 
-def test_create_users_invalid_json(test_app_with_db):
-    response = test_app_with_db.post("/users/", data=json.dumps({}))
+def test_create_users_invalid_json(test_app_with_db_noauth):
+    response = test_app_with_db_noauth.post("/users/", data=json.dumps({}))
 
     assert response.status_code == 422
     assert response.json() == {
@@ -44,8 +43,28 @@ def test_create_users_invalid_json(test_app_with_db):
     }
 
 
-def test_read_user(test_app_with_db):
-    response = test_app_with_db.post(
+def test_create_users_invalid_json(test_app_with_db_noauth):
+    response = test_app_with_db_noauth.post("/users/", data=json.dumps({}))
+
+    assert response.status_code == 422
+    assert response.json() == {
+        "detail": [
+            {
+                "loc": ["body", "username"],
+                "msg": "field required",
+                "type": "value_error.missing",
+            },
+            {
+                "loc": ["body", "plain_password"],
+                "msg": "field required",
+                "type": "value_error.missing",
+            },
+        ]
+    }
+
+
+def test_read_user(test_app_with_db_noauth):
+    response = test_app_with_db_noauth.post(
         "/users/",
         data=json.dumps(
             {
@@ -59,7 +78,7 @@ def test_read_user(test_app_with_db):
     )
     user_id = response.json()["id"]
 
-    response = test_app_with_db.get(f"/users/{user_id}")
+    response = test_app_with_db_noauth.get(f"/users/{user_id}")
     assert response.status_code == 200
 
     response_dict = response.json()
@@ -71,18 +90,18 @@ def test_read_user(test_app_with_db):
     assert response_dict["hashed_password"]
     assert response_dict["created_at"]
 
-    response = test_app_with_db.delete(f"/users/{user_id}/")
+    response = test_app_with_db_noauth.delete(f"/users/{user_id}/")
     assert response.status_code == 200
 
 
-def test_read_user_incorrect_id(test_app_with_db):
-    response = test_app_with_db.get("/users/9999/")
+def test_read_user_incorrect_id(test_app_with_db_noauth):
+    response = test_app_with_db_noauth.get("/users/9999/")
     assert response.status_code == 404
     assert response.json()["detail"] == "User not found"
 
 
-def test_read_all_users(test_app_with_db):
-    response = test_app_with_db.post(
+def test_read_all_users(test_app_with_db_noauth):
+    response = test_app_with_db_noauth.post(
         "/users/",
         data=json.dumps(
             {
@@ -96,18 +115,18 @@ def test_read_all_users(test_app_with_db):
     )
     user_id = response.json()["id"]
 
-    response = test_app_with_db.get("/users/")
+    response = test_app_with_db_noauth.get("/users/")
     assert response.status_code == 200
 
     response_list = response.json()
     assert len(list(filter(lambda d: d["id"] == user_id, response_list))) == 1
 
-    response = test_app_with_db.delete(f"/users/{user_id}/")
+    response = test_app_with_db_noauth.delete(f"/users/{user_id}/")
     assert response.status_code == 200
 
 
-def test_remove_user(test_app_with_db):
-    response = test_app_with_db.post(
+def test_remove_user(test_app_with_db_noauth):
+    response = test_app_with_db_noauth.post(
         "/users/",
         data=json.dumps(
             {
@@ -121,7 +140,7 @@ def test_remove_user(test_app_with_db):
     )
     user_id = response.json()["id"]
 
-    response = test_app_with_db.delete(f"/users/{user_id}/")
+    response = test_app_with_db_noauth.delete(f"/users/{user_id}/")
     assert response.status_code == 200
     response_dict = response.json()
     assert response_dict["id"] == user_id
@@ -131,14 +150,14 @@ def test_remove_user(test_app_with_db):
     assert response_dict["disabled"] == True
 
 
-def test_remove_user_incorrect_id(test_app_with_db):
-    response = test_app_with_db.delete("/users/9999/")
+def test_remove_user_incorrect_id(test_app_with_db_noauth):
+    response = test_app_with_db_noauth.delete("/users/9999/")
     assert response.status_code == 404
     assert response.json()["detail"] == "User not found"
 
 
-def test_update_user(test_app_with_db):
-    response = test_app_with_db.post(
+def test_update_user(test_app_with_db_noauth):
+    response = test_app_with_db_noauth.post(
         "/users/",
         data=json.dumps(
             {
@@ -152,7 +171,7 @@ def test_update_user(test_app_with_db):
     )
     user_id = response.json()["id"]
 
-    response = test_app_with_db.put(
+    response = test_app_with_db_noauth.put(
         f"/users/{user_id}/",
         data=json.dumps(
             {
@@ -173,7 +192,7 @@ def test_update_user(test_app_with_db):
     assert response_dict["full_name"] == "Test User Updated"
     assert response_dict["disabled"] == False
 
-    response = test_app_with_db.delete(f"/users/{user_id}/")
+    response = test_app_with_db_noauth.delete(f"/users/{user_id}/")
     assert response.status_code == 200
 
 
@@ -242,14 +261,18 @@ def test_update_user(test_app_with_db):
         ],
     ],
 )
-def test_update_user_invalid(test_app_with_db, user_id, payload, status_code, detail):
-    response = test_app_with_db.put(f"/users/{user_id}/", data=json.dumps(payload))
+def test_update_user_invalid(
+    test_app_with_db_noauth, user_id, payload, status_code, detail
+):
+    response = test_app_with_db_noauth.put(
+        f"/users/{user_id}/", data=json.dumps(payload)
+    )
     assert response.status_code == status_code
     assert response.json()["detail"] == detail
 
 
-def test_update_user_invalid_username(test_app_with_db):
-    response = test_app_with_db.post(
+def test_update_user_invalid_username(test_app_with_db_noauth):
+    response = test_app_with_db_noauth.post(
         "/users/",
         data=json.dumps(
             {
@@ -263,7 +286,7 @@ def test_update_user_invalid_username(test_app_with_db):
     )
     user_id = response.json()["id"]
 
-    response = test_app_with_db.put(
+    response = test_app_with_db_noauth.put(
         f"/users/{user_id}/",
         data=json.dumps(
             {
@@ -286,5 +309,5 @@ def test_update_user_invalid_username(test_app_with_db):
         ]
     }
 
-    response = test_app_with_db.delete(f"/users/{user_id}/")
+    response = test_app_with_db_noauth.delete(f"/users/{user_id}/")
     assert response.status_code == 200

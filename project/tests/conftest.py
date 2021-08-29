@@ -30,8 +30,30 @@ def test_app():
     # tear down
 
 
-@pytest.fixture(scope="module")
-def test_app_with_db():
+@pytest.fixture(scope="function")
+def test_app_with_db_auth():
+    # set up
+    app = create_application()
+    app.dependency_overrides[get_settings] = get_settings_override
+    # app.dependency_overrides[get_current_active_user] = get_current_active_user_override
+    register_tortoise(
+        app,
+        db_url=os.environ.get("DATABASE_TEST_URL"),
+        modules={"models": ["app.models.user"]},
+        generate_schemas=True,
+        add_exception_handlers=True,
+    )
+    with TestClient(app) as test_client:
+
+        # testing
+        yield test_client
+
+    # tear down
+
+
+@pytest.fixture(scope="function")
+def test_app_with_db_noauth():
+    # set up
     # set up
     app = create_application()
     app.dependency_overrides[get_settings] = get_settings_override
@@ -47,5 +69,3 @@ def test_app_with_db():
 
         # testing
         yield test_client
-
-    # tear down
