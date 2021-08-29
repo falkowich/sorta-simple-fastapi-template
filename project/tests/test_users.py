@@ -8,7 +8,7 @@ def test_create_users(test_app_with_db_noauth):
         "/users/",
         data=json.dumps(
             {
-                "username": "authtestuser",
+                "username": "testuser",
                 "email": "testuser@example.com",
                 "full_name": "Test User",
                 "disabled": False,
@@ -18,24 +18,29 @@ def test_create_users(test_app_with_db_noauth):
     )
 
     assert response.status_code == 201
-
-
-#    user_id = response.json()["id"]
-#    response = test_app_with_db_noauth.delete(f"/users/{user_id}/")
-#    assert response.status_code == 200
-
-
-def test_read_users_auth(test_app_with_db_auth):
-
-    payload = {"username": "authtestuser", "password": "supersecretpassword"}
-    response = test_app_with_db_auth.post("/token", data=payload)
-    token = response.json()["access_token"]
+    user_id = response.json()["id"]
+    response = test_app_with_db_noauth.delete(f"/users/{user_id}/")
     assert response.status_code == 200
-    print(token)
-    headersAuth = {"Authorization": "Bearer " + str(token)}
-    print(headersAuth)
-    response = test_app_with_db_auth.get("/users/", headers=headersAuth)
-    assert response.status_code == 200
+
+
+def test_create_users_invalid_json(test_app_with_db_noauth):
+    response = test_app_with_db_noauth.post("/users/", data=json.dumps({}))
+
+    assert response.status_code == 422
+    assert response.json() == {
+        "detail": [
+            {
+                "loc": ["body", "username"],
+                "msg": "field required",
+                "type": "value_error.missing",
+            },
+            {
+                "loc": ["body", "plain_password"],
+                "msg": "field required",
+                "type": "value_error.missing",
+            },
+        ]
+    }
 
 
 def test_create_users_invalid_json(test_app_with_db_noauth):
