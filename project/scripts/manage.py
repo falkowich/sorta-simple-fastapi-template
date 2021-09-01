@@ -48,16 +48,21 @@ async def generate_schemas(log, settings) -> None:
     await Tortoise.close_connections()
 
 
-async def create_admin() -> None:
+async def create_admin(settings, test=False) -> None:
     plain_password = str(uuid.uuid4())
     hashed_password = await get_password_hash(plain_password)
+
+    if test:
+        username = "testadmin"
+    else:
+        username = "admin"
 
     await Tortoise.init(
         db_url=settings.database_url,
         modules={"models": APP_MODELS},
     )
     user = User(
-        username="admin",
+        username=username,
         email="admin@example.com",
         full_name="Builtin Administratior",
         disabled=False,
@@ -69,6 +74,8 @@ async def create_admin() -> None:
         print(f"Password: {plain_password}")
     except IntegrityError as error:
         print("Administrator already created")
+
+    await Tortoise.close_connections()
 
 
 async def show_settings(settings):
@@ -91,7 +98,7 @@ async def main():
     elif args.mode == "generate-schemas":
         await generate_schemas(log, settings)
     elif args.mode == "create-admin":
-        await create_admin()
+        await create_admin(settings, False)
     else:
         print("whet?")
 

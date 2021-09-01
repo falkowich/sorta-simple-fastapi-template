@@ -81,8 +81,7 @@ def test_auth_disabled_user(test_app_with_db_auth):
     print(headersAuth)
     response = test_app_with_db_auth.get("/users/", headers=headersAuth)
     assert response.status_code == 400
-    assert response.json() == {"detail":"Inactive user"}
-    
+    assert response.json() == {"detail": "Inactive user"}
 
 
 def test_delete_testuser(test_app_with_db_noauth) -> None:
