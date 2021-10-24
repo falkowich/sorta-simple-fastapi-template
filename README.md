@@ -12,7 +12,7 @@ It's a project in flux, that is changed when new ideas is implemented.
 
 If you have any suggestions or even a code PR, do not hesitate to tell me or submit a PR :)
 
-## How to use
+## Usage
 
 ### Docker development images usage
 
@@ -26,18 +26,6 @@ Startup dev conatiners
 
 ```shell
 docker-compose up -d
-```
-
-Initiate database
-
-```shell
-docker-compose exec web python scripts/manage.py --mode generate-schemas
-```
-
-Create first admin user
-
-```shell
-docker-compose exec web python scripts/manage.py --mode create-admin
 ```
 
 Manage db migrations
@@ -58,6 +46,18 @@ init-db    Generate schema and generate app migrate location.
 inspectdb  Introspects the database tables to standard output ...
 migrate    Generate migrate changes file.
 upgrade    Upgrade to specified version.
+```
+
+Initiate database
+
+```shell
+docker-compose exec web python scripts/manage.py --mode generate-schemas
+```
+
+Create first admin user
+
+```shell
+docker-compose exec web python scripts/manage.py --mode create-admin
 ```
 
 Tail logs
