@@ -28,18 +28,6 @@ Startup dev conatiners
 docker-compose up -d
 ```
 
-Initiate database
-
-```shell
-docker-compose exec web python scripts/manage.py --mode generate-schemas
-```
-
-Create first admin user
-
-```shell
-docker-compose exec web python scripts/manage.py --mode create-admin
-```
-
 Manage db migrations
 
 ```shell
@@ -58,6 +46,18 @@ init-db    Generate schema and generate app migrate location.
 inspectdb  Introspects the database tables to standard output ...
 migrate    Generate migrate changes file.
 upgrade    Upgrade to specified version.
+```
+
+Initiate database
+
+```shell
+docker-compose exec web python scripts/manage.py --mode generate-schemas
+```
+
+Create first admin user
+
+```shell
+docker-compose exec web python scripts/manage.py --mode create-admin
 ```
 
 Tail logs
