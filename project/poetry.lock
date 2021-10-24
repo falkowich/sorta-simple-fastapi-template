@@ -792,7 +792,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "tortoise-orm"
-version = "0.17.5"
+version = "0.17.6"
 description = "Easy async ORM for python, built with relations in mind"
 category = "main"
 optional = false
@@ -805,7 +805,6 @@ pypika-tortoise = ">=0.1.1,<0.2.0"
 pytz = "*"
 
 [package.extras]
-docs = ["pygments", "cloud-sptheme", "docutils", "sphinx"]
 aiomysql = ["aiomysql"]
 asyncmy = ["asyncmy"]
 asyncpg = ["asyncpg"]
@@ -864,7 +863,7 @@ test = ["aiohttp", "flake8 (>=3.9.2,<3.10.0)", "psutil", "pycodestyle (>=2.7.0,<
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "f1883f10f4062b5396d0d20b57c1837824d21a850653c541f278a355ba1be1a1"
+content-hash = "fb939ac56ca9a428528736aaca77ace6fba0be738f6499fcf1933e6028f85c5a"
 
 [metadata.files]
 aerich = [
@@ -1310,8 +1309,8 @@ tomli = [
     {file = "tomli-1.2.1.tar.gz", hash = "sha256:a5b75cb6f3968abb47af1b40c1819dc519ea82bcc065776a866e8d74c5ca9442"},
 ]
 tortoise-orm = [
-    {file = "tortoise-orm-0.17.5.tar.gz", hash = "sha256:65a930e6e6050866dc18a7d251a77a6dd2616e814da3ede8bda990147fa6b7d5"},
-    {file = "tortoise_orm-0.17.5-py3-none-any.whl", hash = "sha256:978ec824837b44373fb1b3669d443d823c71b080e39db37db72355fde6cadc24"},
+    {file = "tortoise-orm-0.17.6.tar.gz", hash = "sha256:f4187cd94b838cdf16aaa4e1ec54852d773c1a37a2a510d05f648d7350ab3c6e"},
+    {file = "tortoise_orm-0.17.6-py3-none-any.whl", hash = "sha256:294b94d04d18cf85cca2a93f708be720005625b5dae3af8e8190f050ddb718d2"},
 ]
 typing-extensions = [
     {file = "typing_extensions-3.10.0.2-py2-none-any.whl", hash = "sha256:d8226d10bc02a29bcc81df19a26e56a9647f8b0a6d4a83924139f4a8b01f17b7"},
