@@ -8,7 +8,7 @@ license = "GPL"
 [tool.poetry.dependencies]
 python = "^3.9"
 fastapi = "^0.70.0"
-uvicorn = "^0.14.0"
+uvicorn = "^0.15.0"
 asyncpg = "^0.23.0"
 tortoise-orm = "^0.17.5"
 aerich = "^0.5.4"
