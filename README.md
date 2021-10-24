@@ -12,7 +12,7 @@ It's a project in flux, that is changed when new ideas is implemented.
 
 If you have any suggestions or even a code PR, do not hesitate to tell me or submit a PR :)
 
-## How to use
+## Usage
 
 ### Docker development images usage
 
