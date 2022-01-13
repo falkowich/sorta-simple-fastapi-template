@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, SecretStr, ValidationError, validator
+from pydantic import BaseModel, EmailStr, SecretStr, validator
 from typing import Optional
 
 
