@@ -71,7 +71,9 @@ async def create_admin(settings, test=False) -> None:
     try:
         await user.save()
         print("User: admin")
-        print(f"Password: {plain_password}") # lgtm [py/clear-text-logging-sensitive-data]
+        print(
+            f"Password: {plain_password}"
+        )  # lgtm [py/clear-text-logging-sensitive-data]
     except IntegrityError as error:
         print("Administrator already created")
 
