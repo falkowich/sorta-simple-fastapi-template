@@ -149,3 +149,4 @@ Apply changes
 ```shell
 docker-compose exec web /bin/sh -c "isort ./**/*.py --profile black"
 ```
+
